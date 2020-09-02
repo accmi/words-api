@@ -10,9 +10,9 @@ import (
 
 // GetUsers get all users
 func GetUsers(c *gin.Context) {
-	var users []Models.User
+	var users Models.Users
 
-	err := Models.GetAllUsers(&users)
+	err := users.GetAllUsers()
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -28,7 +28,7 @@ func CreateUser(c *gin.Context) {
 		Email: c.PostForm("email"),
 	}
 
-	err := Models.CreateUser(&user)
+	err := user.CreateUser()
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -44,12 +44,14 @@ func DeleteUser(c *gin.Context) {
 
 	id := c.Params.ByName("id")
 
-	err := Models.DeleteUser(&user, id)
+	err := user.DeleteUser(id)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		log.Panic(err)
 	} else {
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, map[string]string{
+			"isDeleted": "true",
+		})
 	}
 }

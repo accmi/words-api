@@ -6,18 +6,16 @@ import (
 	Config "github.com/accmi/words-api/config"
 )
 
-//GetAllUsers Fetch all user data
-func GetAllUsers(users *[]User) (err error) {
-	if err = Config.DB.Find(&users).Error; err != nil {
-		log.Panic(err)
-		return err
-	}
-	return nil
+// User model
+type User struct {
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 //CreateUser Fetch all user data
-func CreateUser(user *User) (err error) {
-	if err = Config.DB.Create(&user).Error; err != nil {
+func (u *User) CreateUser() error {
+	if err := Config.DB.Create(&u).Error; err != nil {
 		log.Panic(err)
 		return err
 	}
@@ -25,11 +23,23 @@ func CreateUser(user *User) (err error) {
 }
 
 // DeleteUser remove user
-func DeleteUser(u *User, id string) error {
+func (u *User) DeleteUser(id string) error {
 	if err := Config.DB.Where("id = ?", id).Delete(u).Error; err != nil {
 		log.Panic(err)
 		return err
 	}
 
+	return nil
+}
+
+// Users just slice of user
+type Users []User
+
+//GetAllUsers Fetch all user data
+func (us *Users) GetAllUsers() error {
+	if err := Config.DB.Find(&us).Error; err != nil {
+		log.Panic(err)
+		return err
+	}
 	return nil
 }
