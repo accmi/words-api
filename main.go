@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	Config "github.com/accmi/words-api/config"
-	Models "github.com/accmi/words-api/models"
-	Routes "github.com/accmi/words-api/routes"
+	config "github.com/accmi/words-api/config"
+	models "github.com/accmi/words-api/models"
+	routes "github.com/accmi/words-api/routes"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -14,19 +14,19 @@ import (
 var err error
 
 func main() {
-	config := Config.DBConfig{}
-	config.BuildDBConfig()
-	cstring := config.DbURL()
+	configDb := config.DBConfig{}
+	configDb.BuildDBConfig()
+	cstring := configDb.DbURL()
 
-	Config.DB, err = gorm.Open(postgres.Open(cstring), &gorm.Config{})
+	config.DB, err = gorm.Open(postgres.Open(cstring), &gorm.Config{})
 
 	if err != nil {
 		log.Println("db connection error", err)
 	}
 
-	Config.DB.AutoMigrate(&Models.User{})
+	config.DB.AutoMigrate(&models.User{})
 
-	r := Routes.SetupRouter()
+	r := routes.SetupRouter()
 
 	r.Run()
 }
