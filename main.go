@@ -1,14 +1,13 @@
 package main
 
 import (
-	"log"
-
+	"context"
 	config "github.com/accmi/words-api/config"
-	models "github.com/accmi/words-api/models"
 	routes "github.com/accmi/words-api/routes"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v4"
+	//"github.com/golang-migrate/migrate/v4"
+	//"github.com/golang-migrate/migrate/v4/database/postgres"
+	"log"
 )
 
 var err error
@@ -16,15 +15,23 @@ var err error
 func main() {
 	configDb := config.DBConfig{}
 	configDb.BuildDBConfig()
-	cstring := configDb.DbURL()
+	pgString := configDb.DbURL()
 
-	config.DB, err = gorm.Open(postgres.Open(cstring), &gorm.Config{})
+	//if err != nil {
+	//	log.Panic("Problems with migrations", err)
+	//	os.Exit(1)
+	//}
+
+	config.DB, err = pgx.Connect(context.Background(), pgString)
+	//_,_ := config.DB.Ac
+	//driver, err := postgres.WithInstance(config.DB, &postgres.Config{})
+	//m, err := migrate.NewWithDatabaseInstance("file:///db/migrations", configDb.DBName, driver)
+	//m.Steps(2)
 
 	if err != nil {
-		log.Println("db connection error", err)
+		log.Panicln("Problems with connection to DB", err)
 	}
-
-	config.DB.AutoMigrate(&models.User{})
+	defer config.DB.Close(context.Background())
 
 	r := routes.SetupRouter()
 

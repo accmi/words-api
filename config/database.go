@@ -2,15 +2,15 @@ package config
 
 import (
 	"fmt"
+	"github.com/jackc/pgx/v4"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
-	"gorm.io/gorm"
 )
 
 // DB instance from gorm
-var DB *gorm.DB
+var DB *pgx.Conn
 
 // DBConfig represents db configuration
 type DBConfig struct {

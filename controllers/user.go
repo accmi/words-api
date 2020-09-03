@@ -47,6 +47,12 @@ func DeleteUser(c *gin.Context) {
 	err := user.DeleteUser(id)
 
 	if err != nil {
+		if err.Error() == "not found" {
+			c.JSON(http.StatusOK, map[string]string{
+				"error": "this user doesn't exist",
+			})
+			return
+		}
 		c.AbortWithStatus(http.StatusNotFound)
 		log.Panic(err)
 	} else {
