@@ -8,11 +8,14 @@ import (
 // SetupRouter contains all routers
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-	grp := r.Group("users")
+	grp := r.Group("authentication")
 	{
-		grp.GET("", Controllers.GetUsers)
-		grp.POST("", Controllers.CreateUser)
-		grp.DELETE(":id", Controllers.DeleteUser)
+		//grp.GET("", Controllers.GetUsers)
+		//grp.POST("", Controllers.CreateUser)
+		//grp.DELETE(":id", Controllers.DeleteUser)
+
+		grp.POST("up", Controllers.SignUp)
+		grp.POST("in", Controllers.SignIn)
 	}
 
 	return r

@@ -8,4 +8,5 @@ require (
 	github.com/jackc/pgconn v1.6.4
 	github.com/jackc/pgx/v4 v4.8.1
 	github.com/joho/godotenv v1.3.0
+	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 )
