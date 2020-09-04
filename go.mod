@@ -8,6 +8,4 @@ require (
 	github.com/jackc/pgconn v1.6.4
 	github.com/jackc/pgx/v4 v4.8.1
 	github.com/joho/godotenv v1.3.0
-	gorm.io/driver/postgres v1.0.0 // indirect
-	gorm.io/gorm v1.20.0
 )
