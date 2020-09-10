@@ -20,14 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce3f85db-a8af-4d3f-a1f1-f049192b9757" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/repositories/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/user/controller.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/user/model.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/user/repository.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/user/routes.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/auth.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/errors.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/migrations/000001_init_scheme.down.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrations/000001_init_scheme.down.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/migrations/000001_init_scheme.up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrations/000001_init_scheme.up.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/user.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example.env" beforeDir="false" afterPath="$PROJECT_DIR$/example.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/user.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,10 +77,12 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/app" />
     </key>
   </component>
   <component name="RunManager">
@@ -119,5 +129,9 @@
       <screen x="0" y="23" width="2880" height="1532" />
     </state>
     <state x="1623" y="450" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2880.1532@0.23.2880.1532" timestamp="1599172430062" />
+    <state x="1682" y="428" key="SettingsEditor" timestamp="1599395365076">
+      <screen x="0" y="23" width="2880" height="1532" />
+    </state>
+    <state x="1682" y="428" key="SettingsEditor/0.23.2880.1532@0.23.2880.1532" timestamp="1599395365076" />
   </component>
 </project>

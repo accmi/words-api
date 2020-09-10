@@ -1,44 +1,68 @@
-package controllers
+package user
 
 import (
-	"github.com/accmi/words-api/models"
-	"github.com/accmi/words-api/repositories"
+	"fmt"
+	"github.com/accmi/words-api/app/utils"
 	"github.com/gin-gonic/gin"
-	// jwt "github.com/appleboy/gin-jwt/v2"
 	"log"
 	"net/http"
 )
 
+type Credentials struct {
+	Email string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 // SignUp create users
-func SignUp(c *gin.Context) {
+func SignUpHandler(c *gin.Context) {
 	password := c.PostForm("password")
-	hash, err := models.HashPassword(password)
+	hash, err := HashPassword(password)
+
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		log.Panic(err)
 		return
 	}
-	// claims := jwt.ExtractClaims(c)
-	user := models.User{
-		Email: c.PostForm("email"),
+
+	user := User{
 		PasswordsHash: hash,
-		// Token:
 	}
 
-	err = repositories.CreateUser(&user)
+	err = c.BindJSON(&user)
+
+	err = SaveUser(&user)
+
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		log.Panic(err)
 		return
 	}
 
+	err = utils.CreateToken(user.Token)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		log.Panic(err)
+		return
+	}
+
+	user.Token = utils.CurrentToken
+
 	c.JSON(http.StatusOK, user)
 }
 
 // SignIn authenticate user
-func SignIn(c *gin.Context) {
-	//password := c.PostForm("password")
-	//email := c.PostForm("email")
+func SignInHandler(c *gin.Context) {
+	var uc Credentials
+	err := c.BindJSON(&uc)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		log.Panic(err)
+		return
+	}
+
+	fmt.Println(uc)
 }
 
 //// GetUsers get all users

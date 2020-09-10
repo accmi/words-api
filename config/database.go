@@ -3,10 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/jackc/pgx/v4"
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 // DB instance from gorm
@@ -36,21 +33,9 @@ func (dbc *DBConfig) DbURL() string {
 
 // BuildDBConfig is used for building db config
 func (dbc *DBConfig) BuildDBConfig() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Panic(err)
-		os.Exit(1)
-	}
-
-	port := os.Getenv("POSTGRES_PORT")
-	user := os.Getenv("POSTGRES_USER")
-	password := os.Getenv("POSTGRES_PASSWORD")
-	dbName := os.Getenv("POSTGRES_DB")
-	host := os.Getenv("POSTGRES_HOST")
-
-	dbc.Host = host
-	dbc.Port = port
-	dbc.User = user
-	dbc.Password = password
-	dbc.DBName = dbName
+	dbc.Host = os.Getenv("POSTGRES_HOST")
+	dbc.Port = os.Getenv("POSTGRES_PORT")
+	dbc.User = os.Getenv("POSTGRES_USER")
+	dbc.Password = os.Getenv("POSTGRES_PASSWORD")
+	dbc.DBName = os.Getenv("POSTGRES_DB")
 }

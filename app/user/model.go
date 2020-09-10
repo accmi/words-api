@@ -1,4 +1,4 @@
-package models
+package user
 
 import "golang.org/x/crypto/bcrypt"
 
@@ -7,7 +7,7 @@ type User struct {
 	ID    string   `json:"id"`
 	Email string `json:"email"`
 	PasswordsHash string `json:"-"`
-	Token string
+	Token string `json:"token"`
 }
 // HashPassword generate hash
 func HashPassword(password string) (string, error) {

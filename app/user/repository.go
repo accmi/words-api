@@ -1,21 +1,40 @@
-package repositories
+package user
 
 import (
 	"context"
+	"github.com/accmi/words-api/app/utils"
 	Config "github.com/accmi/words-api/config"
-	"github.com/accmi/words-api/models"
 	"log"
 )
 
 // CreateUser to table users
-func CreateUser(u *models.User) error {
+func SaveUser(u *User) utils.ErrorsResponseInterface {
+	var err error = nil
+
+	commandTag, err := Config.DB.Exec(context.Background(),
+		"INSERT INTO users (email, password_hash) VALUES ($1, $2)",
+		u.Email,
+		u.PasswordsHash)
+
+
+	if err != nil || commandTag.RowsAffected() != 1 {
+		log.Panicln("Error query:", err)
+		return utils.ErrorsResponse{}.GetError(err.Error())
+	}
+
+	return nil
+}
+
+// CheckUser to check if user exists
+func CheckUser(u *User) error {
 	var err error = nil
 	var id string
+	var email string
 
 	err = Config.DB.QueryRow(context.Background(),
-		`INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id`,
+		"SELECT id, email FROM users WHERE email=$1 and password_hash=$2",
 		u.Email,
-		u.PasswordsHash).Scan(&id)
+		u.PasswordsHash).Scan(&id, &email)
 
 	u.ID = id
 
