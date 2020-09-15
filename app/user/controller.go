@@ -1,10 +1,8 @@
 package user
 
 import (
-	"fmt"
 	"github.com/accmi/words-api/app/utils"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -15,38 +13,51 @@ type Credentials struct {
 
 // SignUp create users
 func SignUpHandler(c *gin.Context) {
-	password := c.PostForm("password")
-	hash, err := HashPassword(password)
+	var uc Credentials
+	err := c.BindJSON(&uc)
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
-		log.Panic(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	uc.Password, err = HashPassword(uc.Password)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+
 		return
 	}
 
 	user := User{
-		PasswordsHash: hash,
+		Email: uc.Email,
+		PasswordsHash: uc.Password,
 	}
-
-	err = c.BindJSON(&user)
 
 	err = SaveUser(&user)
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-		log.Panic(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
 		return
 	}
 
-	err = utils.CreateToken(user.Token)
+	err, user.Token = utils.CreateToken(user.Email)
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-		log.Panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+
 		return
 	}
-
-	user.Token = utils.CurrentToken
 
 	c.JSON(http.StatusOK, user)
 }
@@ -54,72 +65,48 @@ func SignUpHandler(c *gin.Context) {
 // SignIn authenticate user
 func SignInHandler(c *gin.Context) {
 	var uc Credentials
+	var uph string
 	err := c.BindJSON(&uc)
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-		log.Panic(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
 		return
 	}
 
-	fmt.Println(uc)
-}
+	err = GetUserPasswordByEmail(uc.Email, &uph)
 
-//// GetUsers get all users
-//func GetUsers(c *gin.Context) {
-//	var users []models.User
-//
-//	err := models.GetUsers(&users)
-//
-//	if err != nil {
-//		c.AbortWithStatus(http.StatusBadRequest)
-//	} else {
-//		c.JSON(http.StatusOK, users)
-//	}
-//}
-//
-//// CreateUser add new user
-//func CreateUser(c *gin.Context) {
-//	user := models.User{
-//		Name:  c.PostForm("name"),
-//		Email: c.PostForm("email"),
-//	}
-//
-//	err := user.CreateUser()
-//
-//	if err != nil {
-//		c.AbortWithStatus(http.StatusBadRequest)
-//		log.Panic(err)
-//	} else {
-//		c.JSON(http.StatusOK, user)
-//	}
-//}
-//
-//// DeleteUser add new user
-//func DeleteUser(c *gin.Context) {
-//	var user models.User
-//
-//	ids := c.Params.ByName("id")
-//	id, err := strconv.Atoi(ids)
-//	if err != nil {
-//		c.AbortWithStatus(http.StatusBadRequest)
-//		log.Panic(err)
-//	}
-//
-//	err = user.DeleteUser(id)
-//
-//	if err != nil {
-//		if err.Error() == "not found" {
-//			c.JSON(http.StatusOK, map[string]string{
-//				"error": "this user doesn't exist",
-//			})
-//			return
-//		}
-//		c.AbortWithStatus(http.StatusNotFound)
-//		log.Panic(err)
-//	} else {
-//		c.JSON(http.StatusOK, map[string]string{
-//			"isDeleted": "true",
-//		})
-//	}
-//}
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	res := CheckPasswordHash(uc.Password, uph)
+
+	if res {
+		err, token := utils.CreateToken(uc.Email)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"token": token,
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusBadRequest, gin.H{
+		"error": "Password isn't correct",
+	})
+}

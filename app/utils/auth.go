@@ -7,9 +7,9 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-var CurrentToken string
+var CurrentTokens []string
 
-func CreateToken(uId string) error {
+func CreateToken(uId string) (error, string) {
 	var err error = nil
 
 	atClaims := jwt.MapClaims{
@@ -20,7 +20,9 @@ func CreateToken(uId string) error {
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	secret := os.Getenv("SECRET_KEY")
-	CurrentToken, err = at.SignedString([]byte(os.Getenv(secret)))
+	token, err := at.SignedString([]byte(os.Getenv(secret)))
 
-	return err
+	CurrentTokens = append(CurrentTokens, token)
+
+	return err, token
 }
