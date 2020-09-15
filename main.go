@@ -1,32 +1,47 @@
 package main
 
 import (
-	"log"
-
+	"context"
+	"fmt"
+	routes "github.com/accmi/words-api/app/routes"
 	config "github.com/accmi/words-api/config"
-	models "github.com/accmi/words-api/models"
-	routes "github.com/accmi/words-api/routes"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v4"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 var err error
 
 func main() {
-	configDb := config.DBConfig{}
-	configDb.BuildDBConfig()
-	cstring := configDb.DbURL()
-
-	config.DB, err = gorm.Open(postgres.Open(cstring), &gorm.Config{})
+	err = godotenv.Load(".env")
 
 	if err != nil {
-		log.Println("db connection error", err)
+		log.Panic(err)
+		os.Exit(1)
 	}
 
-	config.DB.AutoMigrate(&models.User{})
+	configDb := config.DBConfig{}
+	configDb.BuildDBConfig()
+	pgString := configDb.DbURL()
+
+	config.DB, err = pgx.Connect(context.Background(), pgString)
+
+	if err != nil {
+		log.Panicln("Problems with connection to DB", err)
+	}
 
 	r := routes.SetupRouter()
 
-	r.Run()
+
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Panicln("port variable have not found")
+		return
+	}
+
+	defer config.DB.Close(context.Background())
+
+	log.Fatal(r.Run(fmt.Sprintf(":%s", port)))
 }
