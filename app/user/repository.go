@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	Config "github.com/accmi/words-api/config"
 	"log"
 )
@@ -28,8 +27,6 @@ func SaveUser(u *User) error {
 // GetUserPasswordByEmail to find user
 func GetUserPasswordByEmail(email string, ph *string) error {
 	var err error = nil
-
-	fmt.Println(email)
 
 	err = Config.DB.QueryRow(context.Background(),
 		"SELECT password_hash FROM users WHERE email=$1",
