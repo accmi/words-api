@@ -20,20 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce3f85db-a8af-4d3f-a1f1-f049192b9757" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/search/contriller.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/search/model.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/search/repository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/search/routes.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/runner.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/user/repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/migrations/000001_init_scheme.up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrations/000001_init_scheme.up.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/search/contriller.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/search/contriller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example.env" beforeDir="false" afterPath="$PROJECT_DIR$/example.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 // FindParticularEntity to search words/expressions
@@ -15,7 +16,7 @@ func FindParticularEntity(c *gin.Context) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
-	if err != nil && req != nil {
+	if err != nil || req == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -23,8 +24,8 @@ func FindParticularEntity(c *gin.Context) {
 		return
 	}
 
-	req.Header.Add("x-rapidapi-host", "wordsapiv1.p.rapidapi.com")
-	req.Header.Add("x-rapidapi-key", "c2b2b0e05amsh98116736bec3314p145134jsnae6b4ddac8e6")
+	req.Header.Add("x-rapidapi-host", os.Getenv("RAPID_API_HOST"))
+	req.Header.Add("x-rapidapi-key", os.Getenv("RAPID_API_KEY"))
 
 	res, err := http.DefaultClient.Do(req)
 
